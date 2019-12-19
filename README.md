@@ -46,3 +46,14 @@ http://ianharvey.github.io/bluepy-doc/index.html
 
 Git Hub Link :
 https://github.com/IanHarvey/bluepy
+
+# Hardware Requirement
+1 Rpi 4 (Ble 5)
+2 sixfab mPCI-E Base Shield 
+3 EC25-AU
+4 ETM Ble publisher beacon
+
+# Future Scope
+This gateway code over RPi will be able to Scan our particular beacon push the data to the server. 
+Internet access will be through Cellular module using SixFab base board - with Quectle module / Lan / Wifi.
+Configure Devices over the air.
