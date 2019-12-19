@@ -64,6 +64,8 @@ https://github.com/IanHarvey/bluepy
 4 ETM Ble publisher beacon
 
 # Advertisement data explanation
+#Test/Example Input
+#advData="cc031d1d5ff9810000ff1f0201040d094655525a59303132303030350dfffeff01733300ae03c800ca27"
 
 # Future Scope
 This gateway code over RPi will be able to Scan our particular beacon push the data to the server. 
