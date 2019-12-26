@@ -1,3 +1,14 @@
+"""********************************************************************************************
+Project Name    : bleTest.py
+Developer       : Lokesh Ramina
+Platform        : Python 3.7 on Rpi4, Debian
+Date            : 22-12-2019
+Purpose         : To scan Ble Sensor Data and push to second script
+Note			: Please go through the readme.txt file to understand the code and concept
+********************************************************************************************"""
+
+'''***************************Library Import***************************'''
+
 from bluepy.btle import Scanner, DefaultDelegate
 import socket
 import sys

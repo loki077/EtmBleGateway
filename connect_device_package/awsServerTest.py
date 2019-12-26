@@ -1,19 +1,13 @@
-'''
-/*
- * Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *  http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
- '''
+"""********************************************************************************************
+Project Name    : awsServerTest.py
+Developer       : Lokesh Ramina
+Platform        : Python 3.7 on Rpi4, Debian
+Date            : 22-12-2019
+Purpose         : To scan Ble Sensor Data and push to second script
+Note			: Please go through the readme.txt file to understand the code and concept
+********************************************************************************************"""
+
+'''***************************Library Import***************************'''
 
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import logging
@@ -23,8 +17,11 @@ import json
 import socket
 import sys
 import time
+from bleDataClass import DataHandler
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+bleDataHandlerObj = DataHandler()
 
 AllowedActions = ['both', 'publish', 'subscribe']
 
@@ -137,13 +134,22 @@ while True:
 			data = data.replace('~','')
 			messageList = data.split(";")
 			message = convert_lst_dic(messageList)
-			# message['message'] = data
 			message['sequence'] = loopCount
-			messageJson = json.dumps(message)
-			myAWSIoTMQTTClient.publish(topic, messageJson, 1)
-			print('Published topic %s: %s\n' % (topic, messageJson))
+			bleDataHandlerObj.feed_data(message)
 			loopCount += 1
 			data = ""
+			print("DataToLen : ", bleDataHandlerObj.get_data_len())
+		while bleDataHandlerObj.get_data_len() > 0:
+			dataToSend = bleDataHandlerObj.get_data()
+			print("dataToSend",dataToSend)
+			if(dataToSend != ""):
+				finalMessageList = dataToSend.split(",")
+				finalMessage = convert_lst_dic(finalMessageList)
+				print(">>>>>>>>>>>>", finalMessage)
+				messageJson = json.dumps(finalMessage)
+				myAWSIoTMQTTClient.publish(topic, messageJson, 1)
+				print('Published topic %s: %s\n' % (topic, messageJson))
+				print(dataToSend)
 
 	except KeyboardInterrupt:
 		print('closing socket')
